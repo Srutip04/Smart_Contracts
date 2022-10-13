@@ -315,5 +315,28 @@ contract TestContract{
         Customer storage cust = customers[_index];
         return (cust.name, cust.custAddress, cust.age);
     }
+    
+     // ----- MAPPING -----
+    // Allows you to create key / value pairs
+    // The key can be a string, uint, or bool
+    // Value can be anything
+
+    mapping(string => string) public myMap;
+
+    // Assigns key / value pair
+    // If I add "Superman", "Clark Kent"
+    function addSuper(string memory _secret, string memory _name) public {
+        myMap[_secret] = _name;
+    }
+
+    // Returns value assigned to key
+    // If sent "Superman" this returns "Clark Kent"
+    function getName(string memory _secret) public view returns(string memory){
+        return myMap[_secret];
+    }
+
+    function deleteName(string memory _secret) public {
+        delete myMap[_secret];
+    }
    
 }
