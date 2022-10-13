@@ -218,4 +218,59 @@ contract TestContract{
             return "Go to College";
         }
     }
+     // ----- ARRAYS -----
+    // Create an array that holds a dynamic number of values
+    uint[] arr1;
+
+    // Create fixed size array
+    uint[10] arr2;
+
+    // This creates an array of uints 5 in length
+    uint [] public numList = [1,2,3,4,5];
+
+    // Add 1, 2, 3, 4 to array
+    function addToArray(uint num) public {
+        // Add to end of array
+        arr1.push(num);
+    }
+
+    // Array is now 1, 2, 3
+    function removeFromArray() public {
+        // Remove the last element
+        arr1.pop();
+    }
+
+    // Length should be 3
+    function getLength() public view returns (uint){
+        // Get array length
+        return arr1.length;
+    }
+
+    // If we pass 2 : 1, 2, 0
+    function setIndexToZero(uint _index) public {
+        // Sets value at specific index to 0
+        // When you delete a value in an array the length 
+        // stays the same
+        delete arr1[_index];
+    }
+
+    // ----- FOR LOOP -----
+    // Initialize starting index for loop
+    // Define the loop length
+    // How index value changes after each loop
+
+    // If we pass 1 : 1, 0
+    function removeIndex(uint _index) public {
+        // Move the values up to replace the value to replace
+        for(uint i = _index; i < arr1.length-1; i++){
+            arr1[i] = arr1[i+1];
+        }
+        // Remove the last element
+        arr1.pop();
+    }
+
+    // Get values in array
+    function getArrayVals() public view returns (uint[] memory){
+        return arr1;
+    }
 }
