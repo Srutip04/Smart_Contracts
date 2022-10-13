@@ -295,4 +295,25 @@ contract TestContract{
         }
         return _sum;
     }
+    
+     // ----- STRUCTS -----
+    // Create a data type that contains multiple variables
+
+    struct Customer {
+        string name;
+        string custAddress;
+        uint age;
+    }
+
+    Customer[] public customers;
+
+    function addCust(string memory n, string memory ca, uint a) public {
+        customers.push(Customer(n, ca, a));
+    }
+
+    function getCust(uint _index) public view returns (string memory n, string memory ca, uint a){
+        Customer storage cust = customers[_index];
+        return (cust.name, cust.custAddress, cust.age);
+    }
+   
 }
