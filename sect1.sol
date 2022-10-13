@@ -273,4 +273,26 @@ contract TestContract{
     function getArrayVals() public view returns (uint[] memory){
         return arr1;
     }
+    
+     // ----- FOR LOOP -----
+    
+    function sumNums() public view returns (uint){
+        uint _sum = 0;
+        
+        for(uint i = 1; i <= numList.length; i++){
+            _sum += numList[i];
+        }
+        return _sum;
+    }
+
+    // ----- WHILE LOOP -----
+    function sumNums2() public view returns (uint){
+        uint _i = 0;
+        uint _sum = 0;
+        while (_i < numList.length) {
+            _sum += numList[_i];
+            _i++;
+        }
+        return _sum;
+    }
 }
