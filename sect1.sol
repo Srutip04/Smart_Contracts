@@ -194,4 +194,28 @@ contract TestContract{
         bytes memory _byte1 = bytes(_str1);
         return _byte1.length;
     }
+    
+    // ----- CONDITIONALS -----
+    // Comparison Operators : == != > < >= <=
+    // Logical Operators : && || !
+    uint age = 8;
+    
+    // We are stating to store the arguments in memory
+    function whatSchool() public view returns (string memory){
+        if (age < 5) {
+            return "Stay Home";
+        } else if (age >= 5 && age <= 6){
+            return "Go to Kindergarten";
+        } else if (age >= 6 && age <= 17){
+            uint _grade = age - 5;
+
+            // Convert uint into a string
+            string memory _gradeStr = Strings.toString(_grade);
+
+            // Concat strings
+            return string(abi.encodePacked("Grade ",_gradeStr));
+        } else {
+            return "Go to College";
+        }
+    }
 }
