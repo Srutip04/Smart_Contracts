@@ -352,7 +352,18 @@ contract TestContract{
     {    
         return (customer[_index].name, customer[_index].custAddress, customer[_index].age);
     }
-    
+     // ----- NESTED MAPPING -----
+    // Maps inside maps
+    // If you wanted a customer list for multiple businesses
+    // The businesses would have a unique uint
+    mapping(address => mapping(uint => Customer)) public myCusts;
+
+    // Map customer data to different address
+    function addMyCusts(uint custID, string memory n, string memory ca, uint a) public {
+        // msg.sender is a global variable that is the address that is
+        // calling the contract
+        myCusts[msg.sender][custID] = Customer(n, ca, a);
+    }
     
    
 }
