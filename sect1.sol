@@ -338,5 +338,21 @@ contract TestContract{
     function deleteName(string memory _secret) public {
         delete myMap[_secret];
     }
+    
+    // ----- STRUCTS & MAPPING -----
+    mapping(uint => Customer) customer;
+
+    // Map customer data to a index
+    function addCust2(uint custID, string memory n, string memory ca, uint a) public {
+        customer[custID] = Customer(n, ca, a);
+    }
+
+    // Retrieve customer data using an index
+    function getCust2(uint _index) public view returns (string memory n, string memory ca, uint a)
+    {    
+        return (customer[_index].name, customer[_index].custAddress, customer[_index].age);
+    }
+    
+    
    
 }
