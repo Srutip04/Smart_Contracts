@@ -420,5 +420,49 @@ contract MyLedger {
         return balances[msg.sender];
     }
 }
+contract Owner {
+
+    // Holds the address for the owner who deployed this contract
+    address owner;
+
+    // Set the owner as that entity that created the contract
+    constructor() public {
+        owner = msg.sender;
+    }
+
+    // Create function modifier that will block anyone from changing
+    // prices except for the owner
+    modifier onlyOwner {
+        // Requires this condition to be true or an error is thrown
+        require(msg.sender == owner);
+
+        // If the caller is the owner then continue executing the 
+        // function that uses this function modifier
+        _;
+    }
+}
+
+// By inheriting from Owner we can restrict access to change prices 
+contract Purchase is Owner {
+    // Mapping that links addresses for purchasers
+    mapping (address => bool) purchasers;
+
+    uint price;
+
+    constructor(uint _price) {
+        price = _price;
+    }
+
+    // You can call this function along with some ether because of
+    // payable
+    function purchase() public payable {
+        purchasers[msg.sender] = true;
+    }
+
+    // Only the owner can change this price
+    function setPrice(uint _price) public onlyOwner {
+        price = _price;
+    }
+}
    
 }
