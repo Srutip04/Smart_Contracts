@@ -365,5 +365,19 @@ contract TestContract{
         myCusts[msg.sender][custID] = Customer(n, ca, a);
     }
     
+    
+    // ----- DATE & TIME -----
+    // Solidity has time units with the lowest unit at 1 second
+    function timeUnits() public pure {
+        // If any of these aren't true the function throws
+        // an error
+        assert(1 seconds == 1);
+        assert(1 minutes == 60 seconds);
+        assert(1 hours == 60 minutes);
+        assert(1 days == 24 hours);
+        assert(1 weeks == 7 days);
+    }
+
+    
    
 }
