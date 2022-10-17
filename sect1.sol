@@ -400,5 +400,25 @@ contract TestContract{
     function getShirtSize() public view returns(shirtSize) {
         return custSize;
     }
+    
+    // ----- SPECIAL VARIABLES -----
+
+// Contracts are like objects of date and functions
+// to manipulate that data
+contract MyLedger {
+    // Create a map of addresses and balances
+    mapping(address => uint) public balances;
+
+    // Change the balance for the address
+    function changeBalance(uint newBal) public {
+        // msg.sender is the sender of the message
+        balances[msg.sender] = newBal;
+    }
+
+    // Get current balance for address
+    function getBalance() public view returns (uint){
+        return balances[msg.sender];
+    }
+}
    
 }
