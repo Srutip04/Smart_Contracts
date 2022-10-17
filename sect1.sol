@@ -464,5 +464,43 @@ contract Purchase is Owner {
         price = _price;
     }
 }
+contract FallbackTest {
+    // Maps address to its balance
+    mapping (address => uint) balance;
+
+    // Event that logs gas
+    event Log(uint gas);
+
+    // Function shouldn't do much because it will fail if it uses 
+    // to much gas. This keeps the Ether and emits a log
+    fallback () external payable {
+        emit Log(gasleft());
+    }
+
+    function getBalance() public view returns(uint) {
+        return address(this).balance;
+    }
+}
+
+// This contract sends Ether to FallbackTest contract
+// 1. Deploy FallbackTest & TransferToFallback
+// 2. Click copy next to FallvackTest to copy its address
+// 3. Paste address into transferFallback
+// 4. Change value to 2 Ether
+// 5. Click transferFallback
+// 6. Click getBalance to see the Ether was transferred
+// 7. callFallback works the same
+contract TransferToFallback {
+
+    // Sends Ether with transfar method
+    function transferFallback(address payable _target) public payable {
+        _target.transfer(msg.value);
+    }
+
+    // Sends Ether with call method
+    function callFallback(address payable _target) public payable {
+        (bool sent,) = _target.call{value:msg.value}('');
+        require(sent, 'FAILURE: Not Sent');
+    }
    
 }
