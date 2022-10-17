@@ -378,6 +378,27 @@ contract TestContract{
         assert(1 weeks == 7 days);
     }
 
-    
+    // ----- ENUMS -----
+    // Enums are variables that can only have a limited number of values
+    enum shirtSize{SMALL, MEDIUM, LARGE}
+
+    // Create variable of type shirtSize
+    shirtSize custSize;
+
+    // Set a default size and mark it as constant
+    shirtSize constant defaultSize = shirtSize.MEDIUM;
+
+    function pickShirtSmall() public {
+        custSize = shirtSize.SMALL;
+    }
+
+    function pickShirtMedium() public {
+        custSize = shirtSize.MEDIUM;
+    }
+
+    // Get current size as a uint
+    function getShirtSize() public view returns(shirtSize) {
+        return custSize;
+    }
    
 }
