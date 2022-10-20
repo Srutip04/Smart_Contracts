@@ -12,7 +12,7 @@ contract Lottery{
 
     receive() external payable{
         // the manager can not participate in the lottery
-        require(msg.sender != manager);
+        // require(msg.sender != manager);
         
         require(msg.value >= 0.01 ether);
         players.push(payable(msg.sender));
@@ -28,17 +28,24 @@ contract Lottery{
     }
 
     function pickWinner() public{
-       require(msg.sender == manager);
-       require(players.length >=3);
+        //anyone can pick the winner and finish the lottery, if there are at least 10 players.
+    //    require(msg.sender == manager);
+       require(players.length >=10);
 
        uint r = random();
        address payable winner;
-
+        // computing a random index of the array
        uint index = r% players.length;
        winner = players[index];
 
-       winner.transfer(address(this).balance);
+       uint managerFee = (address(this).balance * 10) / 100; //fee 10%
+       uint winnerFee = (address(this).balance * 90) /100; //90%
 
+        // transferring 90% of contract's balance to the winner
+       winner.transfer(winnerFee);
+        // transferring 10% of contract's balance to the manager
+       payable(manager).transfer(managerFee);
+        // resetting the lottery for the next round
        players = new address payable[](0);
     }
 } 
