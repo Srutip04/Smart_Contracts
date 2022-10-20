@@ -9,6 +9,9 @@ contract Lottery{
     }
 
     receive() external payable{
+        // the manager can not participate in the lottery
+        require(msg.sender != manager);
+        
         require(msg.value >= 0.01 ether);
         players.push(payable(msg.sender));
     }
