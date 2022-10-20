@@ -338,5 +338,169 @@ contract TestContract{
     function deleteName(string memory _secret) public {
         delete myMap[_secret];
     }
+    
+    // ----- STRUCTS & MAPPING -----
+    mapping(uint => Customer) customer;
+
+    // Map customer data to a index
+    function addCust2(uint custID, string memory n, string memory ca, uint a) public {
+        customer[custID] = Customer(n, ca, a);
+    }
+
+    // Retrieve customer data using an index
+    function getCust2(uint _index) public view returns (string memory n, string memory ca, uint a)
+    {    
+        return (customer[_index].name, customer[_index].custAddress, customer[_index].age);
+    }
+     // ----- NESTED MAPPING -----
+    // Maps inside maps
+    // If you wanted a customer list for multiple businesses
+    // The businesses would have a unique uint
+    mapping(address => mapping(uint => Customer)) public myCusts;
+
+    // Map customer data to different address
+    function addMyCusts(uint custID, string memory n, string memory ca, uint a) public {
+        // msg.sender is a global variable that is the address that is
+        // calling the contract
+        myCusts[msg.sender][custID] = Customer(n, ca, a);
+    }
+    
+    
+    // ----- DATE & TIME -----
+    // Solidity has time units with the lowest unit at 1 second
+    function timeUnits() public pure {
+        // If any of these aren't true the function throws
+        // an error
+        assert(1 seconds == 1);
+        assert(1 minutes == 60 seconds);
+        assert(1 hours == 60 minutes);
+        assert(1 days == 24 hours);
+        assert(1 weeks == 7 days);
+    }
+
+    // ----- ENUMS -----
+    // Enums are variables that can only have a limited number of values
+    enum shirtSize{SMALL, MEDIUM, LARGE}
+
+    // Create variable of type shirtSize
+    shirtSize custSize;
+
+    // Set a default size and mark it as constant
+    shirtSize constant defaultSize = shirtSize.MEDIUM;
+
+    function pickShirtSmall() public {
+        custSize = shirtSize.SMALL;
+    }
+
+    function pickShirtMedium() public {
+        custSize = shirtSize.MEDIUM;
+    }
+
+    // Get current size as a uint
+    function getShirtSize() public view returns(shirtSize) {
+        return custSize;
+    }
+    
+    // ----- SPECIAL VARIABLES -----
+
+// Contracts are like objects of date and functions
+// to manipulate that data
+contract MyLedger {
+    // Create a map of addresses and balances
+    mapping(address => uint) public balances;
+
+    // Change the balance for the address
+    function changeBalance(uint newBal) public {
+        // msg.sender is the sender of the message
+        balances[msg.sender] = newBal;
+    }
+
+    // Get current balance for address
+    function getBalance() public view returns (uint){
+        return balances[msg.sender];
+    }
+}
+contract Owner {
+
+    // Holds the address for the owner who deployed this contract
+    address owner;
+
+    // Set the owner as that entity that created the contract
+    constructor() public {
+        owner = msg.sender;
+    }
+
+    // Create function modifier that will block anyone from changing
+    // prices except for the owner
+    modifier onlyOwner {
+        // Requires this condition to be true or an error is thrown
+        require(msg.sender == owner);
+
+        // If the caller is the owner then continue executing the 
+        // function that uses this function modifier
+        _;
+    }
+}
+
+// By inheriting from Owner we can restrict access to change prices 
+contract Purchase is Owner {
+    // Mapping that links addresses for purchasers
+    mapping (address => bool) purchasers;
+
+    uint price;
+
+    constructor(uint _price) {
+        price = _price;
+    }
+
+    // You can call this function along with some ether because of
+    // payable
+    function purchase() public payable {
+        purchasers[msg.sender] = true;
+    }
+
+    // Only the owner can change this price
+    function setPrice(uint _price) public onlyOwner {
+        price = _price;
+    }
+}
+contract FallbackTest {
+    // Maps address to its balance
+    mapping (address => uint) balance;
+
+    // Event that logs gas
+    event Log(uint gas);
+
+    // Function shouldn't do much because it will fail if it uses 
+    // to much gas. This keeps the Ether and emits a log
+    fallback () external payable {
+        emit Log(gasleft());
+    }
+
+    function getBalance() public view returns(uint) {
+        return address(this).balance;
+    }
+}
+
+// This contract sends Ether to FallbackTest contract
+// 1. Deploy FallbackTest & TransferToFallback
+// 2. Click copy next to FallvackTest to copy its address
+// 3. Paste address into transferFallback
+// 4. Change value to 2 Ether
+// 5. Click transferFallback
+// 6. Click getBalance to see the Ether was transferred
+// 7. callFallback works the same
+contract TransferToFallback {
+
+    // Sends Ether with transfar method
+    function transferFallback(address payable _target) public payable {
+        _target.transfer(msg.value);
+    }
+
+    // Sends Ether with call method
+    function callFallback(address payable _target) public payable {
+        (bool sent,) = _target.call{value:msg.value}('');
+        require(sent, 'FAILURE: Not Sent');
+    }
    
 }
