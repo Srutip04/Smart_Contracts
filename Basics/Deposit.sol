@@ -1,6 +1,10 @@
 pragma solidity >=0.5.0 <0.9.0;
 
 contract Deposit{
+    address public owner;
+    constructor(){
+        owner = msg.sender;
+    }
    // either receive() or fallback() is mandatory for the contract to receive ETH by 
     // sending ETH to the contract's address
     
@@ -29,8 +33,9 @@ contract Deposit{
         // and balance is a member of any variable of type address. 
         return address(this).balance;
     }
-
-     function transferEther(address payable recipient,uint amount) public returns(bool){
+    // accessing contract balaance
+    function transferEther(address payable recipient,uint amount) public returns(bool){
+       require(owner == msg.sender);
         if(amount <= getBalance()){
             recipient.transfer(amount);
             return true;
@@ -38,4 +43,6 @@ contract Deposit{
             return false;
         }
     }
+
+
 }
