@@ -35,6 +35,8 @@ contract Deposit{
     }
     // accessing contract balaance
     function transferEther(address payable recipient,uint amount) public returns(bool){
+        // transfering the amount of wei from the contract to the recipient address
+             // anyone who can call this function have access to the contract's funds
        require(owner == msg.sender);
         if(amount <= getBalance()){
             recipient.transfer(amount);
