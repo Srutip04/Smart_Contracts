@@ -29,4 +29,13 @@ contract Deposit{
         // and balance is a member of any variable of type address. 
         return address(this).balance;
     }
+
+     function transferEther(address payable recipient,uint amount) public returns(bool){
+        if(amount <= getBalance()){
+            recipient.transfer(amount);
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
