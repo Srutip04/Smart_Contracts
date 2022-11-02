@@ -35,7 +35,19 @@ contract Will{
         inheritance[wallet] = amt;
     }
 
+    //pay eachfamily member based on their wallet address
 
+    function payout() private mustBeDeceased{
+        for(uint i=0;i<familyWallets.length;i++){
+           familyWallets[i].transfer(inheritance[familyWallets[i]]);
+        }
+    } 
+
+    function isdeceased() public onlyOwner{
+       deceased = true;
+       payout();
+
+    }
 
 
 }
