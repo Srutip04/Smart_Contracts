@@ -1,6 +1,16 @@
 pragma solidity >=0.5.0 <0.9.0;
 
 contract GlobalVariables{
+
+    // the current block number
+uint public block_number = block.number;
+ 
+// the block difficulty
+uint public difficulty = block.difficulty;
+ 
+// the block gas limit
+uint public gaslimit = block.gaslimit;
+ 
     address public owner;
     uint public sentVal;
     constructor(){
