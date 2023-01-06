@@ -1,5 +1,11 @@
 pragma solidity >=0.5.0 <0.9.0;
 
+
+//An abstract contract is the one with at least one function that is not implemented and is
+// declared using the abstract keywork;
+// ● You can mark a contract as being abstract even though all functions are implemented;
+// ● An abstract contract cannot be deployed
+
 //cannot be deployed
 abstract contract BaseContract{
     int public x;
