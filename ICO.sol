@@ -101,4 +101,33 @@ contract CryptosICO is Cryptos{
         admin = msg.sender;
         icoState = State.beforeStart;
     }
+
+    modifier onlyAdmin(){
+        require(msg.sender == admin);
+        _;
+    }
+
+    function halt() public onlyAdmin{
+        icoState = State.halted;
+    }
+    function resume() public onlyAdmin{
+        icoState = State.running;
+    }
+
+    function changeDepositAddress(address payable newDeposit) public onlyAdmin{
+        deposit = newDeposit;
+    }
+
+    function getCurrentState() public view returns(State){
+        if(icoState == State.halted){
+            return State.halted;
+        }else if(block.timestamp < saleStart){
+            return State.beforeStart;
+        }else if(block.timestamp >= saleStart && block.timestamp <= saleEnd){
+            return State.running;
+        }else{
+            return State.afterEnd;
+        }
+    }
+
 }
